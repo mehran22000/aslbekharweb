@@ -1,4 +1,4 @@
-	<article id="post-0" class="post no-results not-found">
+	<!-- <article id="post-0" class="post no-results not-found"> 
 		<header class="entry-header">
 			<h1 class="entry-title">
 			{if $wp->canCurrentUser(edit_posts) and $message == empty-site}
@@ -28,5 +28,6 @@
 
 			{searchForm}
 
-		</div><!-- .entry-content -->
-	</article><!-- #post-0 -->
+		</div>
+	</article>
+-->

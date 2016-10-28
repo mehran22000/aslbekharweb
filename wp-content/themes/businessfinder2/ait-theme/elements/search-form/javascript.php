@@ -1,6 +1,5 @@
 <script id="{$htmlId}-script">
 jQuery(document).ready(function(){
-
 	{if $options->theme->general->progressivePageLoading}
 		if(!isResponsive(1024)){
 			jQuery("#{!$htmlId}-main").waypoint(function(){
@@ -246,6 +245,59 @@ jQuery(document).ready(function(){
 		jQuery(this).parent().find('select').select2('open');
 	});
 	{/if}
+
+	jQuery('.searchsubmit2').click(function(){
+		var centerLat = globalMaps.headerMap.map.getCenter().lat();
+		var centerLng = globalMaps.headerMap.map.getCenter().lng();
+		jQuery.ajax({
+            url: 'https://buyoriginal.herokuapp.com/services/v1/dev/stores/storelist/all/'+centerLat+'/'+centerLng+'/1',
+            type: 'GET',
+            beforeSend: function (request)
+            {
+            	request.setRequestHeader("Content-Type", "application/json");
+            	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+            },
+            success: function(result) {
+            	// Remove previous searched markers
+            	if (typeof globalMaps.headerMap.ourMarkers !== 'undefined') {
+					for (var i = 0; i < globalMaps.headerMap.ourMarkers.length; i++ ) {
+						globalMaps.headerMap.ourMarkers[i].setMap(null);
+					}
+					globalMaps.headerMap.ourMarkers.length = 0;
+					// for (var i = 0; i < globalMaps.headerMap.ourInfoWindows.length; i++ ) {
+					// 	globalMaps.headerMap.ourInfoWindows[i].setMap(null);
+					// }
+					// globalMaps.headerMap.ourInfoWindows.length = 0;
+				}
+				globalMaps.headerMap.ourMarkers = [];
+				globalMaps.headerMap.ourInfoWindows = [];
+            	var infowindow = new google.maps.InfoWindow;
+                result.forEach(function(item){
+                	var myLatLng = {};
+                	myLatLng.lat = parseFloat(item.sLat);
+                	myLatLng.lng = parseFloat(item.sLong);
+                	var marker = new google.maps.Marker({
+			          position: myLatLng,
+			          map: globalMaps.headerMap.map,
+			          title: item.sName
+			        });
+			        marker.addListener('click', function() {
+			        	infowindow.setContent('<b>'+item.sName+'</b>');
+						infowindow.open(globalMaps.headerMap.map, marker);
+			        });
+			        globalMaps.headerMap.ourMarkers.push(marker);
+			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
+
+			        jQuery('.elements-area .stores-list').append('<li>'+item.sName+'</li>');
+
+                });
+            },
+            error: function(result){
+            	console.log(result);
+            	debugger;
+            }
+        });
+	});
 });
 
 

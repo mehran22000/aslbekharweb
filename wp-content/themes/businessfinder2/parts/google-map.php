@@ -36,7 +36,7 @@ MAP = $.extend(MAP, {
 
 
 	mapOptions: {
-		center: { lat: 0, lng: 0},
+		center: { lat: 35.674619, lng: 51.422496},
 		zoom: 3,
 	    streetViewControl: true,
 		draggable: true,

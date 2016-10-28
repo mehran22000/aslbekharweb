@@ -129,7 +129,7 @@
 					{getSidebar left}
 				{/if}
 				<div class="elements-area">
-
+				<ul class="stores-list"></ul>
 		{elseif $element->id == sidebars-boundary-end}
 
 				</div><!-- .elements-area -->
