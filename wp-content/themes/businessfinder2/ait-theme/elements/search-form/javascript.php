@@ -272,6 +272,7 @@ jQuery(document).ready(function(){
 				globalMaps.headerMap.ourMarkers = [];
 				globalMaps.headerMap.ourInfoWindows = [];
             	var infowindow = new google.maps.InfoWindow;
+            	jQuery('.elements-area .stores-list').empty();
                 result.forEach(function(item){
                 	var myLatLng = {};
                 	myLatLng.lat = parseFloat(item.sLat);
