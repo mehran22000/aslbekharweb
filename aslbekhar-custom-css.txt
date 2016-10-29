@@ -1,0 +1,39 @@
+.clearboth {
+clear:both;
+}
+ul.stores-list {
+direction: rtl;
+text-align: right;
+height: 200px;
+overflow-y:scroll;
+border: 1px solid #dcdcdc;
+}
+ul.stores-list li {
+border-bottom: 1px solid #e2b3e9;
+}
+ul.stores-list li .store-item {
+width:100%;
+}
+ul.stores-list li .store-item div {
+float: right;
+}
+ul.stores-list li .store-icons {
+width: 10%;
+background: red;
+min-height:20px;
+}
+ul.stores-list li .store-info {
+width: 40%;
+background: blue;
+min-height:20px;
+}
+ul.stores-list li .store-contact {
+width: 35%;
+background: yellow;
+min-height:20px;
+}
+ul.stores-list li .store-image {
+width: 15%;
+background: green;
+min-height:20px;
+}
