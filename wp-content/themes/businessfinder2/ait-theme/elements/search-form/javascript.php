@@ -272,6 +272,7 @@ jQuery(document).ready(function(){
 				globalMaps.headerMap.ourMarkers = [];
 				globalMaps.headerMap.ourInfoWindows = [];
             	var infowindow = new google.maps.InfoWindow;
+            	var itemHtml = '';
             	jQuery('.elements-area .stores-list').empty();
                 result.forEach(function(item){
                 	var myLatLng = {};
@@ -288,8 +289,9 @@ jQuery(document).ready(function(){
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
-
-			        jQuery('.elements-area .stores-list').append('<li>'+item.sName+'</li>');
+			        ///wp-content/themes/businessfinder2/design/img/logos/mango.png
+			        itemHtml = '<li><div class="store-item"><div class="store-icons"></div><div class="store-info"><h4>'+item.sName+'</h4></div><div class="store-contact"></div><div class="store-image"></div></div><div class="clearboth"></div></li>';
+			        jQuery('.elements-area .stores-list').append(itemHtml);
 
                 });
             },
