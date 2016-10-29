@@ -290,7 +290,7 @@ jQuery(document).ready(function(){
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
 			        ///wp-content/themes/businessfinder2/design/img/logos/mango.png
-			        itemHtml = '<li><div class="store-item"><div class="store-icons"></div><div class="store-info"><h4>'+item.sName+'</h4></div><div class="store-contact"></div><div class="store-image"></div></div><div class="clearboth"></div></li>';
+			        itemHtml = '<li><div class="store-item"><div class="store-icons">Icons</div><div class="store-info"><h4>'+item.sName+'</h4></div><div class="store-contact">Contact info</div><div class="store-image">Image</div></div><div class="clearboth"></div></li>';
 			        jQuery('.elements-area .stores-list').append(itemHtml);
 
                 });
