@@ -273,6 +273,7 @@ jQuery(document).ready(function(){
 				globalMaps.headerMap.ourInfoWindows = [];
             	var infowindow = new google.maps.InfoWindow;
             	var itemHtml = '';
+            	var imageName = '';
             	jQuery('.elements-area .stores-list').empty();
                 result.forEach(function(item){
                 	var myLatLng = {};
@@ -289,8 +290,8 @@ jQuery(document).ready(function(){
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
-			        ///wp-content/themes/businessfinder2/design/img/logos/mango.png
-			        itemHtml = '<li><div class="store-item"><div class="store-icons">Icons</div><div class="store-info"><h4>'+item.sName+'</h4></div><div class="store-contact">Contact info</div><div class="store-image">Image</div></div><div class="clearboth"></div></li>';
+			        imageName = item.bName.toLowerCase().replace(/ /g, '');
+			        itemHtml = '<li><div class="store-item"><div class="store-image"><img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" /></div><div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div><div class="store-info"><h4>'+item.sName+'</h4><p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p></div><div class="store-contact"><a>نکات اصل و تقلبی</a><p><span>آدرس: </span><span>'+item.sAddress+'</span></p><p><span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span></p><p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+'</p></div></div><div class="clearboth"></div></li>';
 			        jQuery('.elements-area .stores-list').append(itemHtml);
 
                 });
