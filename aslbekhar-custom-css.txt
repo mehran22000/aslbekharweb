@@ -1,12 +1,18 @@
 .clearboth {
 clear:both;
+float:none;
 }
-ul.stores-list {
-direction: rtl;
+.pull-right {
+float: right !important;
+}
+.pull-left {
+float: left !important;
+}
+.stores-list {
 text-align: right;
-height: 200px;
-overflow-y:scroll;
+height: 600px;
 border: 1px solid #dcdcdc;
+overflow-y: scroll;
 }
 ul.stores-list li {
 border-bottom: 1px solid #e2b3e9;
@@ -36,4 +42,65 @@ ul.stores-list li .store-image {
 width: 15%;
 background: green;
 min-height:20px;
+}
+.slideshow, .ads, .apps {
+height: 600px;
+}
+.slideshow {
+background: red;
+}
+.ads {
+background: blue;
+}
+.apps {
+background: white url(./wp-content/themes/businessfinder2/design/img/graph.png) repeat-x;
+background-position: bottom center;
+}
+.hide {
+display: none !important;
+}
+#masthead {
+height: 155px;
+background: #000000 url(./wp-content/themes/businessfinder2/design/img/menu.png) repeat-y;
+background-position: top center;
+}
+.sticky-menu {
+background: #000000 url(./wp-content/themes/businessfinder2/design/img/menu.png) repeat-y;
+background-position: top center;
+}
+.download-app{
+position: absolute;
+bottom: -20px;
+left: 50%;
+margin-left: -420px;
+width: 839px;
+height: 89px;
+background: url(./wp-content/themes/businessfinder2/design/img/download-app.png) no-repeat;
+}
+.slogan {
+margin-top: 35px;
+margin-right: 38px;
+width: 362px;
+height: 40px;
+background: url(./wp-content/themes/businessfinder2/design/img/slogan.png) no-repeat;
+}
+.menu-button {
+  color: #000000;
+  font-size: 15px;
+  background: #e8e8e8;
+  padding: 5px 20px 5px 20px;
+  border-bottom: 1px solid #bcbcbc;
+  text-decoration: none;
+}
+.menu-button:hover {
+  background: #d738de;
+color: #ffffff;
+  text-decoration: none;
+}
+.menu-items {
+    margin-top: 34px;
+}
+.elm-search-form {
+background: url(./wp-content/themes/businessfinder2/design/img/search-bg.png) repeat-x !important;
+height: 467px !important;
 }

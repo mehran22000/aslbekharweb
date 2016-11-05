@@ -130,6 +130,9 @@
 				{/if}
 				<div class="elements-area">
 				<ul class="stores-list"></ul>
+				<div class="slideshow"></div>
+				<div class="ads"></div>
+				<div class="apps"></div>
 		{elseif $element->id == sidebars-boundary-end}
 
 				</div><!-- .elements-area -->

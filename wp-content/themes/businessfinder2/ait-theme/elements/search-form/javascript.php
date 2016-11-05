@@ -275,7 +275,8 @@ jQuery(document).ready(function(){
             	var itemHtml = '';
             	var imageName = '';
             	jQuery('.elements-area .stores-list').empty();
-                result.forEach(function(item){
+            	var processedItems = 0;
+                result.forEach(function(item, index, array){
                 	var myLatLng = {};
                 	myLatLng.lat = parseFloat(item.sLat);
                 	myLatLng.lng = parseFloat(item.sLong);
@@ -285,15 +286,42 @@ jQuery(document).ready(function(){
 			          title: item.sName
 			        });
 			        marker.addListener('click', function() {
-			        	infowindow.setContent('<b>'+item.sName+'</b>');
-						infowindow.open(globalMaps.headerMap.map, marker);
+			        	var obj = {
+			        		offset: -110,
+			        	};
+						jQuery('html').scrollTo(jQuery('.stores-list'), 800, obj);
+			        	jQuery('.stores-list').scrollTo(jQuery('#elem-'+item._id), 800);
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
 			        imageName = item.bName.toLowerCase().replace(/ /g, '');
-			        itemHtml = '<li><div class="store-item"><div class="store-image"><img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" /></div><div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div><div class="store-info"><h4>'+item.sName+'</h4><p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p></div><div class="store-contact"><a>نکات اصل و تقلبی</a><p><span>آدرس: </span><span>'+item.sAddress+'</span></p><p><span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span></p><p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+'</p></div></div><div class="clearboth"></div></li>';
+			        itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
+			        				<div class="store-item">\
+			        					<div class="store-image">\
+			        						<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
+			        					</div>\
+			        					<div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div>\
+			        					<div class="store-info">\
+			        						<h4>'+item.sName+'</h4>\
+			        						<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
+			        					</div>\
+			        					<div class="store-contact">\
+			        						<a>نکات اصل و تقلبی</a>\
+			        						<p>\
+			        							<span>آدرس: </span><span>'+item.sAddress+'</span>\
+			        						</p>\
+			        						<p>\
+			        							<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>\
+			        						</p>\
+			        						<p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+
+			        						'</p>\
+			        					</div>\
+			        				</div>\
+			        				<div class="clearboth"></div>\
+			        			</li>';
 			        jQuery('.elements-area .stores-list').append(itemHtml);
-
+			        processedItems++;
+			        
                 });
             },
             error: function(result){

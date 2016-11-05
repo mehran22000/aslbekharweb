@@ -147,6 +147,10 @@ return array(
 				'file'	=> '/libs/gmap3.infobox.js',
 				'deps'	=> array('jquery', 'jquery-gmap3-local'),
 			),
+			'jquery-scrollto' => array(
+				'file' => '/libs/jquery.scrollTo.min.js',
+				'deps' => array('jquery'),
+			),
 			/* AIT CUSTOM SCRIPTS */
 			'ait-mobile-script' => array(
 				'file' => '/mobile.js',

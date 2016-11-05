@@ -41,59 +41,28 @@
 
 
 		<header id="masthead" class="site-header" role="banner">
-
-			<div class="top-bar">
-				<div class="grid-main">
-
-					<div class="top-bar-tools">
-					{includePart parts/social-icons}
-					{includePart portal/parts/header-resources}
-					{includePart parts/woocommerce-cart}
-					{includePart parts/languages-switcher}
-					</div>
-					<p class="site-description">{!html_entity_decode($wp->description)}</p>
-
+			<div class="menu-con">
+				<div id="logo" class="pull-right">
+					<a href="{$homeUrl}" title="{$wp->name}" rel="home"><img src="{$options->theme->header->logo}" alt="logo"></a>
 				</div>
+				<div class="slogan pull-right"></div>
+				<div class="menu-items pull-left">
+					<button class="menu-button">عضو شوید</button>
+					<button class="menu-button">دیده شوید</button>
+					<button class="menu-button">مطمئن شوید</button>
+					<button class="menu-button">بیابید</button>
+				</div>
+				<div class="clearboth"></div>
 			</div>
-				<div class="header-container grid-main">
-
-					<div class="site-logo">
-						{if $options->theme->header->logo}
-						<a href="{$homeUrl}" title="{$wp->name}" rel="home"><img src="{$options->theme->header->logo}" alt="logo"></a>
-						{else}
-						<div class="site-title"><a href="{$homeUrl}" title="{$wp->name}" rel="home">{$wp->name}</a></div>
-						{/if}
-
-					</div>
-
-					<div class="menu-container">
-						<nav class="main-nav menu-hidden" role="navigation" data-menucollapse={$options->theme->header->menucollapse}>
-
-							<div class="main-nav-wrap">
-								<h3 class="menu-toggle">{__ 'Menu'}</h3>
-								{menu main}
-							</div>
-						</nav>
-
-						<div class="menu-tools">
-							{includePart portal/parts/user-panel}
-						</div>
-					</div>
-
-				</div>
-
-
-			</header><!-- #masthead -->
+			<div class="download-app"></div>
+		</header>
 
 		<div class="sticky-menu menu-container" >
-			<div class="grid-main">
-				<div class="site-logo">
-					{if $options->theme->header->logo}
+			<div class="menu-con">
+				<div class="site-logo pull-right">
 					<a href="{$homeUrl}" title="{$wp->name}" rel="home"><img src="{$options->theme->header->logo}" alt="logo"></a>
-					{else}
-					<div class="site-title"><a href="{$homeUrl}" title="{$wp->name}" rel="home">{$wp->name}</a></div>
-					{/if}
 				</div>
+				<div class="slogan pull-right">asdfasdf</div>
 				<nav class="main-nav menu-hidden">
 					<!-- wp menu here -->
 				</nav>
