@@ -8,6 +8,34 @@ var burgerMenuData = [{selectors: ['.header-container'], reservedSelectors: ['li
 /* Main Initialization Hook */
 jQuery(document).ready(function(){
 	/* menu.js initialization */
+	var mainOpts = {
+        //auto-advancing slides? accepts boolean (true/false) or object
+        auto : { 
+            // speed to advance slides at. accepts number of milliseconds
+            speed : 2500, 
+            // pause advancing on mouseover? accepts boolean
+            pauseOnHover : true 
+        },
+        // show fullscreen toggle? accepts boolean
+        fullScreen : true, 
+        // support swiping on touch devices? accepts boolean, requires hammer.js
+        swipe : true 
+    };
+	var adsOpts = {
+        //auto-advancing slides? accepts boolean (true/false) or object
+        auto : { 
+            // speed to advance slides at. accepts number of milliseconds
+            speed : 2500, 
+            // pause advancing on mouseover? accepts boolean
+            pauseOnHover : false 
+        },
+        // show fullscreen toggle? accepts boolean
+        fullScreen : false, 
+        // support swiping on touch devices? accepts boolean, requires hammer.js
+        swipe : true 
+    };
+	makeBSS('.main-slideshow', mainOpts);
+	makeBSS('.small-slide', adsOpts);
 	desktopMenu();
 	responsiveMenu();
 

@@ -113,6 +113,9 @@ return array(
 			'font-awesome'	=> array(
 				'file'	=> '/libs/font-awesome.css',
 			),
+			'simple-slideshow'	=> array(
+				'file'	=> '/libs/simple-slideshow-styles.css',
+			),
 			'jquery-ui-css' => true,
 			'optiscroll'	=> array(
 				'file'	=> '/libs/optiscroll.css',
@@ -150,6 +153,17 @@ return array(
 			'jquery-scrollto' => array(
 				'file' => '/libs/jquery.scrollTo.min.js',
 				'deps' => array('jquery'),
+			),
+			'hammer' => array(
+				'file' => '/libs/hammer.min.js',
+			),
+			'hammer-time' => array(
+				'file' => '/libs/hammer-time.min.js',
+				'deps' => array('hammer'),
+			),
+			'better-simple-slideshow' => array(
+				'file' => '/libs/better-simple-slideshow.min.js',
+				'deps' => array('hammer', 'hammer-time'),
 			),
 			/* AIT CUSTOM SCRIPTS */
 			'ait-mobile-script' => array(

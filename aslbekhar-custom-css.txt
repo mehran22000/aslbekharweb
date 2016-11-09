@@ -13,6 +13,8 @@ text-align: right;
 height: 600px;
 border: 1px solid #dcdcdc;
 overflow-y: scroll;
+    background: url(./wp-content/themes/businessfinder2/design/img/top-graph.png) repeat-x;
+    background-position: top center;
 }
 ul.stores-list li {
 border-bottom: 1px solid #e2b3e9;
@@ -43,17 +45,33 @@ width: 15%;
 background: green;
 min-height:20px;
 }
-.slideshow, .ads, .apps {
+.bss-slides, .small-slides, .apps {
 height: 600px;
 }
-.slideshow {
-background: red;
+.small-slides {
+background: #000000 url(./wp-content/themes/businessfinder2/design/img/ads-bg.png) repeat-y;
+background-position: top center;
+position: relative;
 }
-.ads {
-background: blue;
+.small-slides-container {
+background: white;
+width: 1200px;
+height: 500px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -600px;
+}
+.small-slide {
+width: 290px;
+float: left;
+margin: 5px;
+}
+.small-slide .bss-prev, .small-slide .bss-next {
+display: none !important;
 }
 .apps {
-background: white url(./wp-content/themes/businessfinder2/design/img/graph.png) repeat-x;
+background: white url(./wp-content/themes/businessfinder2/design/img/bottom-graph.png) repeat-x;
 background-position: bottom center;
 }
 .hide {
