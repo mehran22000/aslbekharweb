@@ -133,19 +133,15 @@
 				<div class="bss-slides main-slideshow">
 				<figure>
 					<img src="./wp-content/themes/businessfinder2/design/img/slides/Feature1.png" width="100%" />
-					<figcaption></figcaption> 
 				</figure>
 				<figure>
 					<img src="./wp-content/themes/businessfinder2/design/img/slides/Feature2.png" width="100%" />
-					<figcaption></figcaption> 
 				</figure>
 				<figure>
 					<img src="./wp-content/themes/businessfinder2/design/img/slides/Feature3.png" width="100%" />
-					<figcaption></figcaption> 
 				</figure>
 				<figure>
 					<img src="./wp-content/themes/businessfinder2/design/img/slides/Feature4.png" width="100%" />
-					<figcaption></figcaption> 
 				</figure>
 			    </div> 
 				<div class="small-slides">
@@ -153,41 +149,33 @@
 						<div class="bss-slides small-slide">
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small1.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small5.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 						</div>
 						<div class="bss-slides small-slide">
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small2.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small6.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 						</div>
 						<div class="bss-slides small-slide">
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small3.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small7.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 						</div>
 						<div class="bss-slides small-slide">
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small4.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 							<figure>
 								<img src="./wp-content/themes/businessfinder2/design/img/small-slides/small8.png" width="100%" />
-								<figcaption></figcaption> 
 							</figure>
 						</div>
 					</div>
