@@ -47,14 +47,16 @@
 				</div>
 				<div class="slogan pull-right"></div>
 				<div class="menu-items pull-left">
-					<button class="menu-button">عضو شوید</button>
-					<button class="menu-button">دیده شوید</button>
-					<button class="menu-button">مطمئن شوید</button>
-					<button class="menu-button">بیابید</button>
+					<button class="menu-button menu-join">عضو شوید</button>
+					<button class="menu-button menu-promote">دیده شوید</button>
+					<button class="menu-button menu-verify">مطمئن شوید</button>
+					<button class="menu-button menu-search">بیابید</button>
 				</div>
 				<div class="clearboth"></div>
 			</div>
-			<div class="download-app"></div>
+			<div class="download-app">
+				<div class="dl-app-con">>>>&nbsp;&nbsp;&nbsp;اپلیکیشن موبایل اصل بخر &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; را از اینجا دریافت کنید&nbsp;&nbsp;&nbsp;<<<</div>
+			</div>
 		</header>
 
 		<div class="sticky-menu menu-container" >
@@ -62,9 +64,12 @@
 				<div class="site-logo pull-right">
 					<a href="{$homeUrl}" title="{$wp->name}" rel="home"><img src="{$options->theme->header->logo}" alt="logo"></a>
 				</div>
-				<div class="slogan pull-right">asdfasdf</div>
-				<nav class="main-nav menu-hidden">
-					<!-- wp menu here -->
+				<div class="slogan pull-right"></div>
+				<nav class="menu-items pull-left">
+					<button class="menu-button menu-join">عضو شوید</button>
+					<button class="menu-button menu-promote">دیده شوید</button>
+					<button class="menu-button menu-verify">مطمئن شوید</button>
+					<button class="menu-button menu-search">بیابید</button>
 				</nav>
 			</div>
 		</div>

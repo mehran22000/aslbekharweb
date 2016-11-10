@@ -271,7 +271,7 @@ jQuery(document).ready(function(){
 				}
 				globalMaps.headerMap.ourMarkers = [];
 				globalMaps.headerMap.ourInfoWindows = [];
-            	var infowindow = new google.maps.InfoWindow;
+            	//var infowindow = new google.maps.InfoWindow;
             	var itemHtml = '';
             	var imageName = '';
             	jQuery('.elements-area .stores-list').empty();
@@ -293,7 +293,7 @@ jQuery(document).ready(function(){
 			        	jQuery('.stores-list').scrollTo(jQuery('#elem-'+item._id), 800);
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
-			        globalMaps.headerMap.ourInfoWindows.push(infowindow);
+			        //globalMaps.headerMap.ourInfoWindows.push(infowindow);
 			        imageName = item.bName.toLowerCase().replace(/ /g, '');
 			        itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
 			        				<div class="store-item">\

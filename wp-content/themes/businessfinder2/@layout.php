@@ -180,7 +180,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="apps"></div>
+				<div class="apps">
+					<div class="download-buttons">
+						<div class="txt">در اصل بخر عضو شوید و فروشگاه خود را به جمع ما بیاورید. عضویت در اصل بخر رایگان است. و همیشه باقی می ماند.</div>
+						<a class="googleplay" href=""><img width="180" src="./wp-content/themes/businessfinder2/design/img/googleplay.png"></a>
+						<a class="appstore" href=""><img width="180" src="./wp-content/themes/businessfinder2/design/img/appstore.png"></a>
+						<a class="joinus" href=""><img src="./wp-content/themes/businessfinder2/design/img/joinus.png"></a>
+						<div class="clearboth"></div>
+					</div>
+				</div>
 		{elseif $element->id == sidebars-boundary-end}
 
 				</div><!-- .elements-area -->

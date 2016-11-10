@@ -7,6 +7,24 @@ var burgerMenuData = [{selectors: ['.header-container'], reservedSelectors: ['li
 
 /* Main Initialization Hook */
 jQuery(document).ready(function(){
+var scrollOpts = {
+	offset: -66
+};
+jQuery( ".menu-join" ).click(function() {
+	jQuery('html').scrollTo(jQuery('.apps'), 800, scrollOpts);
+});
+jQuery( ".menu-verify" ).click(function() {
+	jQuery('html').scrollTo(jQuery('.main-slideshow'), 800, scrollOpts);
+});
+jQuery( ".menu-promote" ).click(function() {
+	jQuery('html').scrollTo(jQuery('.small-slides'), 800, scrollOpts);
+});
+jQuery( ".menu-search" ).click(function() {
+	jQuery('html').scrollTo(jQuery('.site-header'), 800);
+});
+
+
+
 	/* menu.js initialization */
 	var mainOpts = {
         //auto-advancing slides? accepts boolean (true/false) or object
