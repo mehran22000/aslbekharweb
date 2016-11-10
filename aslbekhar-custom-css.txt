@@ -45,7 +45,7 @@ width: 15%;
 background: green;
 min-height:20px;
 }
-.bss-slides, .small-slides, .apps {
+.main-slideshow, .small-slides, .apps {
 height: 600px;
 }
 .small-slides {
@@ -73,6 +73,7 @@ display: none !important;
 .apps {
 background: white url(./wp-content/themes/businessfinder2/design/img/bottom-graph.png) repeat-x;
 background-position: bottom center;
+position: relative;
 }
 .hide {
 display: none !important;
@@ -102,6 +103,12 @@ width: 362px;
 height: 40px;
 background: url(./wp-content/themes/businessfinder2/design/img/slogan.png) no-repeat;
 }
+.sticky-menu .slogan {
+margin-top: 18px;
+}
+.sticky-menu .menu-items {
+margin-top: 18px;
+}
 .menu-button {
   color: #000000;
   font-size: 15px;
@@ -121,4 +128,35 @@ color: #ffffff;
 .elm-search-form {
 background: url(./wp-content/themes/businessfinder2/design/img/search-bg.png) repeat-x !important;
 height: 467px !important;
+}
+.dl-app-con {
+height: 100%;
+background: url(./wp-content/themes/businessfinder2/design/img/mobile.png) no-repeat;
+background-position: center center;
+margin: auto;
+text-align: center;
+    line-height: 89px;
+    font-size: 20px;
+    color: white;
+}
+.download-buttons {
+width: 850px;
+    position: absolute;
+    bottom: 40%;
+    left: 50%;
+    margin-left: -425px
+}
+.download-buttons a {
+display: block;
+float: left;
+margin: 0 5px;
+}
+.download-buttons .googleplay, .download-buttons .appstore {
+margin-top: 18px;
+}
+.download-buttons .txt {
+text-align: center;
+    font-size: 18px;
+    color: black;
+    direction: rtl;
 }
