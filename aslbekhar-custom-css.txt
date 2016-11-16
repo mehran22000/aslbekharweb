@@ -160,3 +160,31 @@ text-align: center;
     color: black;
     direction: rtl;
 }
+.searchsubmit-wrapper {
+margin-top: 18px;
+}
+.checkbox-con input, .checkbox-con label {
+float: right;
+color: #fff;
+}
+.checkbox-con input {
+margin-left: 5px;
+}
+.checkbox-con i {
+color: #bb24c1;
+background: #fff;
+border-radius: 50%;
+padding: 6px;
+}
+.searchsubmit-wrapper {
+    position: absolute;
+    bottom: 95px;
+    left: 0;
+    right: 0;
+}
+.radius {
+margin-top: 8px;
+}
+.title-type-4 {
+direction: rtl;
+}

@@ -1,5 +1,28 @@
 <script id="{$htmlId}-script">
 jQuery(document).ready(function(){
+
+	// load cities
+	jQuery.ajax({
+        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/cities/',
+        type: 'GET',
+        beforeSend: function (request)
+        {
+        	request.setRequestHeader("Content-Type", "application/json");
+        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+        },
+        success: function(result) {
+        	result.forEach(function(item, index, array){
+        		jQuery('#city-select').append('<option value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
+        	});
+        	
+        },
+        error: function(result){
+        	console.log(result);
+        	debugger;
+        }
+    });
+
+
 	{if $options->theme->general->progressivePageLoading}
 		if(!isResponsive(1024)){
 			jQuery("#{!$htmlId}-main").waypoint(function(){
@@ -249,8 +272,21 @@ jQuery(document).ready(function(){
 	jQuery('.searchsubmit2').click(function(){
 		var centerLat = globalMaps.headerMap.map.getCenter().lat();
 		var centerLng = globalMaps.headerMap.map.getCenter().lng();
+		var city = jQuery('#city-select').val();
+		var category = jQuery('#category-select').val();
+		if (category == '') {
+			category = 'all';
+		}
+		var brand = jQuery('#brand-select').val();
+		if (brand == '') {
+			brand = 'all';
+		}
+		var onlyVerified = jQuery('#verification-checkbox').is(':checked');
+		var onlyDiscount = jQuery('#sales-checkbox').is(':checked');
+		var distance = jQuery('.radius-value').html();
+
 		jQuery.ajax({
-            url: 'https://buyoriginal.herokuapp.com/services/v1/dev/stores/storelist/all/'+centerLat+'/'+centerLng+'/1',
+            url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + centerLat + '/' + centerLng,
             type: 'GET',
             beforeSend: function (request)
             {
@@ -281,9 +317,9 @@ jQuery(document).ready(function(){
                 	myLatLng.lat = parseFloat(item.sLat);
                 	myLatLng.lng = parseFloat(item.sLong);
                 	var marker = new google.maps.Marker({
-			          position: myLatLng,
-			          map: globalMaps.headerMap.map,
-			          title: item.sName
+						position: myLatLng,
+						map: globalMaps.headerMap.map,
+						title: item.sName
 			        });
 			        marker.addListener('click', function() {
 			        	var obj = {
@@ -295,30 +331,30 @@ jQuery(document).ready(function(){
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        //globalMaps.headerMap.ourInfoWindows.push(infowindow);
 			        imageName = item.bName.toLowerCase().replace(/ /g, '');
-			        itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
-			        				<div class="store-item">\
-			        					<div class="store-image">\
-			        						<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
-			        					</div>\
-			        					<div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div>\
-			        					<div class="store-info">\
-			        						<h4>'+item.sName+'</h4>\
-			        						<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
-			        					</div>\
-			        					<div class="store-contact">\
-			        						<a>نکات اصل و تقلبی</a>\
-			        						<p>\
-			        							<span>آدرس: </span><span>'+item.sAddress+'</span>\
-			        						</p>\
-			        						<p>\
-			        							<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>\
-			        						</p>\
-			        						<p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+
-			        						'</p>\
-			        					</div>\
-			        				</div>\
-			        				<div class="clearboth"></div>\
-			        			</li>';
+					itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
+									<div class="store-item">\
+										<div class="store-image">\
+											<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
+										</div>\
+										<div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div>\
+										<div class="store-info">\
+											<h4>'+item.sName+'</h4>\
+											<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
+										</div>\
+										<div class="store-contact">\
+											<a>نکات اصل و تقلبی</a>\
+											<p>\
+												<span>آدرس: </span><span>'+item.sAddress+'</span>\
+											</p>\
+											<p>\
+												<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>\
+											</p>\
+											<p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+
+											'</p>\
+										</div>\
+									</div>\
+									<div class="clearboth"></div>\
+								</li>';
 			        jQuery('.elements-area .stores-list').append(itemHtml);
 			        processedItems++;
 			        

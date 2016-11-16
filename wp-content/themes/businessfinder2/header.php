@@ -55,7 +55,7 @@
 				<div class="clearboth"></div>
 			</div>
 			<div class="download-app">
-				<div class="dl-app-con">>>>&nbsp;&nbsp;&nbsp;اپلیکیشن موبایل اصل بخر &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; را از اینجا دریافت کنید&nbsp;&nbsp;&nbsp;<<<</div>
+				
 			</div>
 		</header>
 
