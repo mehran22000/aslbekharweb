@@ -14,6 +14,7 @@ jQuery(document).ready(function(){
         	result.forEach(function(item, index, array){
         		jQuery('#city-select').append('<option value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
         	});
+        	jQuery('#city-select').prop("disabled", false);
         	
         },
         error: function(result){
@@ -21,6 +22,64 @@ jQuery(document).ready(function(){
         	debugger;
         }
     });
+
+	jQuery("#city-select").on('change', function() {
+		var aCode = this.value;
+    	jQuery('#category-select').empty();
+    	jQuery('#category-select').append('<option value="">&nbsp;</option>');
+    	jQuery('#brand-select').empty();
+    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
+    	jQuery("#brand-select").val('').trigger('change');
+    	jQuery("#category-select").val('').trigger('change');
+		jQuery.ajax({
+	        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/categories/areacode/'+aCode,
+	        type: 'GET',
+	        beforeSend: function (request)
+	        {
+	        	request.setRequestHeader("Content-Type", "application/json");
+	        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+	        },
+	        success: function(result) {
+	        	result.forEach(function(item, index, array){
+	        		jQuery('#category-select').append('<option value="' + item.bCategoryId + '">' + item.bCategory + '</option>')
+	        	});
+	        	jQuery('#category-select').prop("disabled", false);
+	        	
+	        },
+	        error: function(result){
+	        	console.log(result);
+	        	debugger;
+	        }
+	    });
+	});
+	jQuery("#category-select").on('change', function() {
+		var catId = this.value;
+		if (catId != '') {
+			var aCode = jQuery('#city-select').val();
+	    	jQuery('#brand-select').empty();
+	    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
+			jQuery("#brand-select").val('').trigger('change');
+			jQuery.ajax({
+		        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/areacode/'+aCode+'/category/'+catId,
+		        type: 'GET',
+		        beforeSend: function (request)
+		        {
+		        	request.setRequestHeader("Content-Type", "application/json");
+		        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+		        },
+		        success: function(result) {
+		        	result.forEach(function(item, index, array){
+		        		jQuery('#brand-select').append('<option value="' + item.bId + '">' + item.bName + '</option>')
+		        	});
+		        	jQuery('#brand-select').prop("disabled", false);
+		        },
+		        error: function(result){
+		        	console.log(result);
+		        	debugger;
+		        }
+		    });
+		}
+	});
 
 
 	{if $options->theme->general->progressivePageLoading}
@@ -40,17 +99,6 @@ jQuery(document).ready(function(){
 		dropdownAutoWidth : true
 	};
 
-	jQuery('#{!$htmlId}').find('select').select2(select2Settings).on("select2-close", function() {
-		// fired to the original element when the dropdown closes
-		jQuery('.select2-drop').removeClass('select2-drop-active');
-
-		// replace all &nbsp;
-		var regPattern = "&nbsp;";
-		jQuery('#{!$htmlId} .category-search .select2-chosen').html(jQuery('#{!$htmlId} .category-search .select2-chosen').html().replace(new RegExp(regPattern, "g"), ''));
-		jQuery('#{!$htmlId} .location-search .select2-chosen').html(jQuery('#{!$htmlId} .location-search .select2-chosen').html().replace(new RegExp(regPattern, "g"), ''));
-
-		jQuery('.select2-drop').removeClass('select-position-first').removeClass('select-position-last');
-	});
 
 	jQuery('#{!$htmlId}').find('select').select2(select2Settings).on("select2-loaded", function() {
 		// fired to the original element when the dropdown closes
@@ -312,6 +360,7 @@ jQuery(document).ready(function(){
             	var imageName = '';
             	jQuery('.elements-area .stores-list').empty();
             	var processedItems = 0;
+            	var bounds = new google.maps.LatLngBounds();
                 result.forEach(function(item, index, array){
                 	var myLatLng = {};
                 	myLatLng.lat = parseFloat(item.sLat);
@@ -321,6 +370,8 @@ jQuery(document).ready(function(){
 						map: globalMaps.headerMap.map,
 						title: item.sName
 			        });
+			        bounds.extend(marker.getPosition());
+			        globalMaps.headerMap.map.fitBounds(bounds);
 			        marker.addListener('click', function() {
 			        	var obj = {
 			        		offset: -110,
@@ -357,7 +408,7 @@ jQuery(document).ready(function(){
 								</li>';
 			        jQuery('.elements-area .stores-list').append(itemHtml);
 			        processedItems++;
-			        
+
                 });
             },
             error: function(result){

@@ -1,33 +1,21 @@
 
 
 	<footer id="footer" class="footer" role="contentinfo">
-
-		{if $options->layout->general->enableWidgetAreas}
-		<div class="footer-widgets">
-			<div class="footer-widgets-wrap grid-main">
-				<div class="footer-widgets-container">
-
-
-					{foreach $wp->widgetAreas(footer) as $widgetArea}
-						{* uncomment condition to hide empty widget areas completely *}
-						{* {if $wp->isWidgetAreaActive($widgetArea)} *}
-						<div class="widget-area {$widgetArea} widget-area-{$iterator->counter}">
-							{widgetArea $widgetArea}
-						</div>
-						{* {/if} *}
-					{/foreach}
-
-				</div>
-			</div>
+	<div class="footer-logo pull-right"></div>
+	<div class="footer-content pull-left">
+		<div class="footer-con">
+			<span class="white">با ما در ارتباط باشید</span>
+			<hr class="white" />
+			<span>آدرس: ایران، اصفهان، دروازه شیراز، ملاصدرا، کوچه هفتم، پلاک ۱۸</span>
+			<hr />
+			<span>تلفن تماس: 03136691021 / 09130218339</span>
+			<hr />
+			<span>ارتباط با ما: contactus@aslbekhar.com</span>
+			<hr />
+			<span>تبلیغات: ad@aslbekhar.com</span>
+			<hr />
 		</div>
-		{/if}
-
-		<div class="site-footer">
-			<div class="site-footer-wrap grid-main">
-				{menu footer, depth => 1}
-				<div class="footer-text">{!$options->theme->footer->text}</div>
-			</div>
-		</div>
+	</div>
 
 	</footer><!-- /#footer -->
 </div><!-- /#page -->

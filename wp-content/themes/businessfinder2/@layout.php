@@ -206,15 +206,7 @@
 			{elseif $element->id == 'comments' && !comments_open($post->ID) && get_comments_number($post->ID) == 0}
 				<!-- COMMENTS DISABLED -->
 			{else}
-				<section n:if="$element->display" id="{$element->htmlId}-main" class="{$element->htmlClasses}">
-
-					<div class="elm-wrapper {$element->htmlClass}-wrapper">
-
-						{includeElement $element}
-
-					</div><!-- .elm-wrapper -->
-
-				</section>
+				
 			{/if}
 		{/if}
 	{/foreach}

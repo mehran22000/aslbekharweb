@@ -188,3 +188,37 @@ margin-top: 8px;
 .title-type-4 {
 direction: rtl;
 }
+.select2-container-disabled {
+background: #cdcdcd !important;
+cursor: not-allowed !important;
+}
+#footer {
+    background: #000 url(./wp-content/themes/businessfinder2/design/img/footer-bg.jpg) repeat-y;
+height: 300px;
+}
+.footer-logo{
+width: 25%;
+height: 100%;
+background: url(./wp-content/themes/businessfinder2/design/img/footer-logo.png) no-repeat;
+background-position: 10% 95%;
+}
+.footer-content {
+width: 75%;
+text-align: right;
+}
+.footer-con {
+direction: rtl;
+color: #404040;
+width: 35%;
+margin-top: 15px;
+float: right;
+}
+.footer-con hr.white {
+border-top: 1px solid white;
+}
+.footer-con span.white {
+color: white;
+}
+.footer-con hr {
+border-top: 1px solid #404040;
+}
