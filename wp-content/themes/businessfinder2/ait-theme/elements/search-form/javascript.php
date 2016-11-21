@@ -387,7 +387,7 @@ jQuery(document).ready(function(){
 										<div class="store-image">\
 											<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
 										</div>\
-										<div class="store-icons">'+(item.sVerified == 'YES' ? 'verifiedIcon' : '') + (item.hasOwnProperty('dPrecentage') ? 'discountIcon' : '') + '</div>\
+										<div class="store-icons">'+(item.sVerified == 'YES' ? '<i class="fa fa-check "></i>' : '') + (item.hasOwnProperty('dPrecentage') ? '<i class="fa fa-percent"></i>' : '') + '</div>\
 										<div class="store-info">\
 											<h4>'+item.sName+'</h4>\
 											<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
