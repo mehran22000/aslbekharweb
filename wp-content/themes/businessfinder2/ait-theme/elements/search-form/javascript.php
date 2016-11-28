@@ -12,7 +12,7 @@ jQuery(document).ready(function(){
         },
         success: function(result) {
         	result.forEach(function(item, index, array){
-        		jQuery('#city-select').append('<option value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
+        		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
         	});
         	jQuery('#city-select').prop("disabled", false);
         	
@@ -24,6 +24,48 @@ jQuery(document).ready(function(){
     });
 
 	jQuery("#city-select").on('change', function() {
+		var center = {
+			lat: parseFloat(jQuery('option:selected', this).attr('data-lat')),
+			lng: parseFloat(jQuery('option:selected', this).attr('data-lon'))
+		}
+		globalMaps.headerMap.map.setCenter(center);
+		var userLocImageStatic = {
+		    url: '/wp-content/themes/businessfinder2/design/img/user-location.png',
+		    // This marker is 20 pixels wide by 32 pixels high.
+		    size: new google.maps.Size(40, 73),
+		    // The origin for this image is (0, 0).
+		    origin: new google.maps.Point(0, 0),
+		    anchor: new google.maps.Point(20, 73)
+		  };
+		var userLocImageMoving = {
+		    url: '/wp-content/themes/businessfinder2/design/img/user-location-moving.png',
+		    // This marker is 20 pixels wide by 32 pixels high.
+		    size: new google.maps.Size(40, 73),
+		    // The origin for this image is (0, 0).
+		    origin: new google.maps.Point(0, 0),
+		    anchor: new google.maps.Point(20, 73)
+		  };
+		var userPositionMarker = new google.maps.Marker({
+			icon: userLocImageStatic,
+			position: center,
+			map: globalMaps.headerMap.map,
+			title: 'Drag me!',
+			draggable: true
+        });
+        jQuery('#user-latitude').html(center.lat);
+    	jQuery('#user-longitude').html(center.lng);
+        userPositionMarker.addListener('position_changed', function() {
+        	var pos = userPositionMarker.getPosition();
+        	jQuery('#user-latitude').html(pos.lat());
+        	jQuery('#user-longitude').html(pos.lng());
+        });
+        userPositionMarker.addListener('dragstart', function() {
+        	userPositionMarker.setIcon(userLocImageMoving);
+        });
+        userPositionMarker.addListener('dragend', function() {
+        	userPositionMarker.setIcon(userLocImageStatic);
+        });
+
 		var aCode = this.value;
     	jQuery('#category-select').empty();
     	jQuery('#category-select').append('<option value="">&nbsp;</option>');
@@ -318,8 +360,8 @@ jQuery(document).ready(function(){
 	{/if}
 
 	jQuery('.searchsubmit2').click(function(){
-		var centerLat = globalMaps.headerMap.map.getCenter().lat();
-		var centerLng = globalMaps.headerMap.map.getCenter().lng();
+		var userLat = jQuery('#user-latitude').html();
+		var userLng = jQuery('#user-longitude').html();
 		var city = jQuery('#city-select').val();
 		var category = jQuery('#category-select').val();
 		if (category == '') {
@@ -334,7 +376,7 @@ jQuery(document).ready(function(){
 		var distance = jQuery('.radius-value').html();
 
 		jQuery.ajax({
-            url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + centerLat + '/' + centerLng,
+            url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + userLat + '/' + userLng,
             type: 'GET',
             beforeSend: function (request)
             {
@@ -365,11 +407,42 @@ jQuery(document).ready(function(){
                 	var myLatLng = {};
                 	myLatLng.lat = parseFloat(item.sLat);
                 	myLatLng.lng = parseFloat(item.sLong);
-                	var marker = new google.maps.Marker({
+      //           	var marker = new google.maps.Marker({
+						// position: myLatLng,
+						// map: globalMaps.headerMap.map,
+						// title: item.sName
+			   //      });
+			        imageName = item.bName.toLowerCase().replace(/ /g, '');
+
+			        var pictureLabel = document.createElement("img");
+					pictureLabel.src = '/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png';
+					var image = {
+					    url: '/wp-content/themes/businessfinder2/design/img/base-marker.png',
+					    // This marker is 20 pixels wide by 32 pixels high.
+					    size: new google.maps.Size(80, 104),
+					    // The origin for this image is (0, 0).
+					    origin: new google.maps.Point(0, 0),
+					    // The anchor for this image is the base of the flagpole at (0, 32).
+					    anchor: new google.maps.Point(0, 104)
+					  };
+					  var labelStyle = {
+					  	width: '69px', 
+					  	height: '69px',
+					  	borderRadius: '50%',
+					  	zIndex: 200
+					  };
+					var marker = new MarkerWithLabel({
 						position: myLatLng,
+						icon: image,
 						map: globalMaps.headerMap.map,
-						title: item.sName
-			        });
+						draggable: false,
+						raiseOnDrag: false,
+						labelContent: pictureLabel,
+						labelAnchor: new google.maps.Point(-5, 98),
+						labelClass: "marker-labels",
+						labelStyle: labelStyle
+					});
+
 			        bounds.extend(marker.getPosition());
 			        globalMaps.headerMap.map.fitBounds(bounds);
 			        marker.addListener('click', function() {
@@ -381,19 +454,26 @@ jQuery(document).ready(function(){
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        //globalMaps.headerMap.ourInfoWindows.push(infowindow);
-			        imageName = item.bName.toLowerCase().replace(/ /g, '');
+			  //       jQuery.ajax({
+					//             url: 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/verification/'+item.bId,
+					//             type: 'GET',
+					//             beforeSend: function (request)
+					//             {
+					//             	request.setRequestHeader("Content-Type", "application/json");
+					//             	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+					//             },
+					// success: function(result){
+					// console.log(result)
+
+					// }
+					// });
 					itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
 									<div class="store-item">\
 										<div class="store-image">\
 											<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
 										</div>\
-										<div class="store-icons">'+(item.sVerified == 'YES' ? '<i class="fa fa-check "></i>' : '') + (item.hasOwnProperty('dPrecentage') ? '<i class="fa fa-percent"></i>' : '') + '</div>\
 										<div class="store-info">\
 											<h4>'+item.sName+'</h4>\
-											<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
-										</div>\
-										<div class="store-contact">\
-											<a>نکات اصل و تقلبی</a>\
 											<p>\
 												<span>آدرس: </span><span>'+item.sAddress+'</span>\
 											</p>\
@@ -401,7 +481,12 @@ jQuery(document).ready(function(){
 												<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>\
 											</p>\
 											<p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+
-											'</p>\
+											'</p><p class="store-icons">' +  
+											(item.sVerified == 'YES' ? '<i class="fa fa-check "></i>' : '') + (item.hasOwnProperty('dPrecentage') ? '<i class="fa fa-percent"></i>' : '') +
+										'</p></div>\
+										<div class="store-contact">\
+											<a>نکات اصل و تقلبی</a>\
+											<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
 										</div>\
 									</div>\
 									<div class="clearboth"></div>\

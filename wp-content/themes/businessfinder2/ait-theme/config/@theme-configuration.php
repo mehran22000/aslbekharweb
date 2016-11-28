@@ -196,6 +196,9 @@ return array(
 				'file'	=> '/libs/jquery.optiscroll.js',
 				'deps'	=> array('jquery'),
 			),
+			'markerwithlabel' => array(
+				'file'	=> '/libs/markerwithlabel.js'
+			),
 			/* AIT CUSTOM SCRIPTS */
 			'ait-script' => array(
 				'file' => '/script.js',

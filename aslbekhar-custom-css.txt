@@ -17,35 +17,34 @@ overflow-y: scroll;
     background-position: top center;
 }
 ul.stores-list li {
-border-bottom: 1px solid #e2b3e9;
+border-bottom: 1px solid #d31edd;
 }
 ul.stores-list li .store-item {
-width:100%;
+width:900px;
 color: black;
+margin: auto;
 }
 ul.stores-list li .store-item div {
 float: right;
 }
 ul.stores-list li .store-icons {
-width: 10%;
-text-align: center;
+text-align: right;
 min-height: 1px;
-margin-top: 10px;
 }
 ul.stores-list li .store-icons .fa-percent {
-font-size: 18px;
+font-size: 12px;
     background: #ff7800;
     border-radius: 50%;
-    padding: 6px;
+    padding: 4px;
 color: white;
+margin-left: 15px;
 }
 ul.stores-list li .store-icons .fa-check {
-font-size: 18px;
+font-size: 12px;
     background: #06a420;
     border-radius: 50%;
-padding: 6px;
+padding: 4px;
 color: white;
-margin-right: 15px;
 }
 ul.stores-list li .store-info {
 width: 40%;
@@ -70,6 +69,7 @@ ul.stores-list li .store-image img {
 -moz-border-radius: 50%;
 border-radius: 50%;
 margin-top: 8px;
+border: 1px solid #d31edd;
 }
 .main-slideshow, .small-slides, .apps {
 height: 600px;
@@ -249,4 +249,8 @@ color: white;
 }
 .footer-con hr {
 border-top: 1px solid #404040;
+}
+.marker-labels img {
+width: 69px;
+height: 69px;
 }
