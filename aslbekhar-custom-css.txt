@@ -75,7 +75,7 @@ border: 1px solid #d31edd;
 height: 600px;
 }
 .small-slides {
-background: #000000 url(./wp-content/themes/businessfinder2/design/img/ads-bg.png) repeat-y;
+background: #000000 url(./wp-content/themes/businessfinder2/design/img/small-slides-bg.png) repeat-y;
 background-position: top center;
 position: relative;
 }
