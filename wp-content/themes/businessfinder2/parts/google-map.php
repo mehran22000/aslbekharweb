@@ -36,9 +36,9 @@ MAP = $.extend(MAP, {
 
 
 	mapOptions: {
-		center: { lat: 35.674619, lng: 51.422496},
-		zoom: 3,
-	    streetViewControl: true,
+		center: { lat: 32.4279, lng: 53.6880},
+		zoom: 5,
+	    streetViewControl: false,
 		draggable: true,
 		scrollwheel: false,
 
@@ -52,7 +52,7 @@ MAP = $.extend(MAP, {
 		customIB: true,
 		externalInfoWindow: true,
 		streetview: false,
-		radius: 100,
+		radius: false,
 	},
 
 
@@ -204,6 +204,7 @@ MAP = $.extend(MAP, {
 			MAP.map.fitBounds(MAP.bounds);
 	    	MAP.map.panToBounds(MAP.bounds);
 			var listener = google.maps.event.addListener(MAP.map, "idle", function() {
+				debugger;
 				if (MAP.map.getZoom() > MAP.mapOptions.zoom) {
 					MAP.map.setZoom(MAP.mapOptions.zoom);
 				}

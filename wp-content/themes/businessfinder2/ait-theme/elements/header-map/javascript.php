@@ -4,7 +4,7 @@
 "use strict";
 
 $window.load(function(){
-
+	globalMaps.headerMap.map.setZoom(5)
 	addHeaderMapControls();
 
 	if (Modernizr.touchevents || Modernizr.pointerevents) {
