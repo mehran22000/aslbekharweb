@@ -17,6 +17,7 @@ overflow-y: scroll;
     background-position: top center;
 }
 ul.stores-list li {
+padding: 10px 0;
 border-bottom: 1px solid #d31edd;
 }
 ul.stores-list li .store-item {
