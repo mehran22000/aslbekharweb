@@ -14,6 +14,9 @@ jQuery(document).ready(function(){
         	result.forEach(function(item, index, array){
         		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
         	});
+        	jQuery('#city-select').val('021');
+        	jQuery('#city-select').select2("val", "021");
+        	jQuery("#city-select").trigger('change');
         	jQuery('#city-select').prop("disabled", false);
         	
         },
@@ -29,6 +32,7 @@ jQuery(document).ready(function(){
 			lng: parseFloat(jQuery('option:selected', this).attr('data-lon'))
 		}
 		globalMaps.headerMap.map.setCenter(center);
+		globalMaps.headerMap.map.setZoom(12);
 		var userLocImageStatic = {
 		    url: '/wp-content/themes/businessfinder2/design/img/user-location.png',
 		    // This marker is 20 pixels wide by 32 pixels high.
@@ -45,13 +49,19 @@ jQuery(document).ready(function(){
 		    origin: new google.maps.Point(0, 0),
 		    anchor: new google.maps.Point(20, 73)
 		  };
-		var userPositionMarker = new google.maps.Marker({
-			icon: userLocImageStatic,
-			position: center,
-			map: globalMaps.headerMap.map,
-			title: 'Drag me!',
-			draggable: true
-        });
+		if (globalMaps.headerMap.userPositionMarker) {
+			globalMaps.headerMap.userPositionMarker.setPosition(center);
+		} else {
+			var userPositionMarker = new google.maps.Marker({
+				icon: userLocImageStatic,
+				position: center,
+				map: globalMaps.headerMap.map,
+				title: 'Drag me!',
+				draggable: true
+	        });
+        	globalMaps.headerMap.userPositionMarker = userPositionMarker;
+			
+		}
         jQuery('#user-latitude').html(center.lat);
     	jQuery('#user-longitude').html(center.lng);
         userPositionMarker.addListener('position_changed', function() {
@@ -238,7 +248,6 @@ jQuery(document).ready(function(){
 		// remove class selected
 		jQuery('#{!$htmlId} .location-search-wrap').removeClass('option-selected');
 	});
-
 
 
 	/* RADIUS SCRIPT */
