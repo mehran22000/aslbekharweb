@@ -1,30 +1,35 @@
 <script id="{$htmlId}-script">
 jQuery(document).ready(function(){
 
-	// load cities
-	jQuery.ajax({
-        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/cities/',
-        type: 'GET',
-        beforeSend: function (request)
-        {
-        	request.setRequestHeader("Content-Type", "application/json");
-        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
-        },
-        success: function(result) {
-        	result.forEach(function(item, index, array){
-        		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
-        	});
-        	jQuery('#city-select').val('021');
-        	jQuery('#city-select').select2("val", "021");
-        	jQuery("#city-select").trigger('change');
-        	jQuery('#city-select').prop("disabled", false);
-        	
-        },
-        error: function(result){
-        	console.log(result);
-        	debugger;
-        }
-    });
+	if (typeof globalMaps == 'undefined') {
+		var mapInterval = setInterval(function(){ 
+			if (typeof globalMaps.headerMap.map != 'undefined')
+				clearInterval(mapInterval);
+				jQuery.ajax({
+			        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/cities/',
+			        type: 'GET',
+			        beforeSend: function (request)
+			        {
+			        	request.setRequestHeader("Content-Type", "application/json");
+			        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+			        },
+			        success: function(result) {
+			        	result.forEach(function(item, index, array){
+			        		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
+			        	});
+			        	jQuery('#city-select').val('021');
+			        	jQuery('#city-select').select2("val", "021");
+			        	jQuery("#city-select").trigger('change');
+			        	jQuery('#city-select').prop("disabled", false);
+			        	
+			        },
+			        error: function(result){
+			        	console.log(result);
+			        	debugger;
+			        }
+			    });
+		}, 1000);
+	}
 
 	jQuery("#city-select").on('change', function() {
 		var center = {
