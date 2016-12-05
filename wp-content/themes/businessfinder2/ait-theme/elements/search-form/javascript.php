@@ -429,90 +429,92 @@ function initRadius($container) {
 
 function showCurrentLocation(callback) {
 	var gMapApiKey = jQuery( "script[src*='maps.google.com/maps/api']" ).attr('src').split('&')[1].substr(4);
-	jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key="+gMapApiKey, function(result) {
-		var userLoc = {
-			lat: result.location.lat,
-			lng: result.location.lng
-		}
-		globalMaps.headerMap.userLoc = userLoc;
-		globalMaps.headerMap.map.setCenter(userLoc);
-		globalMaps.headerMap.map.setZoom(12);
-		var userLocImageStatic = {
-		    url: '/wp-content/themes/businessfinder2/design/img/user-location.png',
-		    // This marker is 20 pixels wide by 32 pixels high.
-		    size: new google.maps.Size(40, 73),
-		    // The origin for this image is (0, 0).
-		    origin: new google.maps.Point(0, 0),
-		    anchor: new google.maps.Point(20, 73)
-		  };
-		var userLocImageMoving = {
-		    url: '/wp-content/themes/businessfinder2/design/img/user-location-moving.png',
-		    // This marker is 20 pixels wide by 32 pixels high.
-		    size: new google.maps.Size(40, 73),
-		    // The origin for this image is (0, 0).
-		    origin: new google.maps.Point(0, 0),
-		    anchor: new google.maps.Point(20, 73)
-		  };
-		if (globalMaps.headerMap.userPositionMarker) {
-			globalMaps.headerMap.userPositionMarker.setPosition(userLoc);
-		} else {
-			var userPositionMarker = new google.maps.Marker({
-				icon: userLocImageStatic,
-				position: userLoc,
-				map: globalMaps.headerMap.map,
-				title: 'Drag me!',
-				draggable: true
+	if (gMapApiKey != '') {
+		jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key="+gMapApiKey, function(result) {
+			var userLoc = {
+				lat: result.location.lat,
+				lng: result.location.lng
+			}
+			globalMaps.headerMap.userLoc = userLoc;
+			globalMaps.headerMap.map.setCenter(userLoc);
+			globalMaps.headerMap.map.setZoom(12);
+			var userLocImageStatic = {
+			    url: '/wp-content/themes/businessfinder2/design/img/user-location.png',
+			    // This marker is 20 pixels wide by 32 pixels high.
+			    size: new google.maps.Size(40, 73),
+			    // The origin for this image is (0, 0).
+			    origin: new google.maps.Point(0, 0),
+			    anchor: new google.maps.Point(20, 73)
+			  };
+			var userLocImageMoving = {
+			    url: '/wp-content/themes/businessfinder2/design/img/user-location-moving.png',
+			    // This marker is 20 pixels wide by 32 pixels high.
+			    size: new google.maps.Size(40, 73),
+			    // The origin for this image is (0, 0).
+			    origin: new google.maps.Point(0, 0),
+			    anchor: new google.maps.Point(20, 73)
+			  };
+			if (globalMaps.headerMap.userPositionMarker) {
+				globalMaps.headerMap.userPositionMarker.setPosition(userLoc);
+			} else {
+				var userPositionMarker = new google.maps.Marker({
+					icon: userLocImageStatic,
+					position: userLoc,
+					map: globalMaps.headerMap.map,
+					title: 'Drag me!',
+					draggable: true
+		        });
+	        	globalMaps.headerMap.userPositionMarker = userPositionMarker;
+			}
+			jQuery('#city-select').val('');
+	    	jQuery('#city-select').select2("val", "");
+			jQuery('#user-latitude').html(userLoc.lat);
+	    	jQuery('#user-longitude').html(userLoc.lng);
+	        globalMaps.headerMap.userPositionMarker.addListener('position_changed', function() {
+	        	var pos = globalMaps.headerMap.userPositionMarker.getPosition();
+	        	jQuery('#user-latitude').html(pos.lat());
+	        	jQuery('#user-longitude').html(pos.lng());
 	        });
-        	globalMaps.headerMap.userPositionMarker = userPositionMarker;
-		}
-		jQuery('#city-select').val('');
-    	jQuery('#city-select').select2("val", "");
-		jQuery('#user-latitude').html(userLoc.lat);
-    	jQuery('#user-longitude').html(userLoc.lng);
-        globalMaps.headerMap.userPositionMarker.addListener('position_changed', function() {
-        	var pos = globalMaps.headerMap.userPositionMarker.getPosition();
-        	jQuery('#user-latitude').html(pos.lat());
-        	jQuery('#user-longitude').html(pos.lng());
-        });
-        globalMaps.headerMap.userPositionMarker.addListener('dragstart', function() {
-        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageMoving);
-        });
-        globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
-        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
-        });
-        jQuery('#category-select').empty();
-    	jQuery('#category-select').append('<option value="">&nbsp;</option>');
-    	jQuery('#brand-select').empty();
-    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
-    	jQuery("#brand-select").val('').trigger('change');
-    	jQuery("#category-select").val('').trigger('change');
-		jQuery.ajax({
-	        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/categories/categorylist/',
-	        type: 'GET',
-	        beforeSend: function (request)
-	        {
-	        	request.setRequestHeader("Content-Type", "application/json");
-	        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
-	        },
-	        success: function(result) {
-	        	result.forEach(function(item, index, array){
-	        		jQuery('#category-select').append('<option value="' + item.cId + '">' + item.cName + '</option>')
-	        		if (index == array.length - 1) {
-	        			callback();
-	        		}
-	        	});
-	        	jQuery('#category-select').prop("disabled", false);
-	        	
-	        },
-	        error: function(result){
-	        	console.log(result);
-	        	debugger;
-	        }
-	    });
-	})
-	.fail(function(err) {
-		console.log(err);
-	});
+	        globalMaps.headerMap.userPositionMarker.addListener('dragstart', function() {
+	        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageMoving);
+	        });
+	        globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
+	        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
+	        });
+	        jQuery('#category-select').empty();
+	    	jQuery('#category-select').append('<option value="">&nbsp;</option>');
+	    	jQuery('#brand-select').empty();
+	    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
+	    	jQuery("#brand-select").val('').trigger('change');
+	    	jQuery("#category-select").val('').trigger('change');
+			jQuery.ajax({
+		        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/categories/categorylist/',
+		        type: 'GET',
+		        beforeSend: function (request)
+		        {
+		        	request.setRequestHeader("Content-Type", "application/json");
+		        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+		        },
+		        success: function(result) {
+		        	result.forEach(function(item, index, array){
+		        		jQuery('#category-select').append('<option value="' + item.cId + '">' + item.cName + '</option>')
+		        		if (index == array.length - 1) {
+		        			callback();
+		        		}
+		        	});
+		        	jQuery('#category-select').prop("disabled", false);
+		        	
+		        },
+		        error: function(result){
+		        	console.log(result);
+		        	debugger;
+		        }
+		    });
+		})
+		.fail(function(err) {
+			console.log(err);
+		});
+	}
 }
 
 
