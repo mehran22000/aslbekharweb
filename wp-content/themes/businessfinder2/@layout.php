@@ -129,7 +129,11 @@
 					{getSidebar left}
 				{/if}
 				<div class="elements-area">
-				<ul class="stores-list"></ul>
+				<div class="stores-container">
+					<ul class="stores-list">
+						
+					</ul>
+				</div>
 				<div class="bss-slides main-slideshow">
 				<figure>
 					<img src="./wp-content/themes/businessfinder2/design/img/slides/Feature1.png" width="100%" />

@@ -212,7 +212,7 @@ padding: 6px;
     right: 0;
 }
 .radius {
-margin-top: 8px;
+margin-top: 7px !important;
 }
 .title-type-4 {
 direction: rtl;
@@ -255,3 +255,10 @@ border-top: 1px solid #404040;
 width: 69px;
 height: 69px;
 }
+.empty-results {
+direction: rtl;
+    text-align: center;
+    margin-top: 20px;
+}
+
+

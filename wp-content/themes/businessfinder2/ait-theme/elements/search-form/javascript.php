@@ -5,6 +5,7 @@ jQuery(document).ready(function(){
 		var mapInterval = setInterval(function(){ 
 			if (typeof globalMaps.headerMap.map != 'undefined')
 				clearInterval(mapInterval);
+				showCurrentLocation(doSearch);
 				jQuery.ajax({
 			        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/cities/',
 			        type: 'GET',
@@ -17,9 +18,11 @@ jQuery(document).ready(function(){
 			        	result.forEach(function(item, index, array){
 			        		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
 			        	});
-			        	jQuery('#city-select').val('021');
-			        	jQuery('#city-select').select2("val", "021");
-			        	jQuery("#city-select").trigger('change');
+			        	if (typeof globalMaps.headerMap.userLoc != 'object') {
+				        	jQuery('#city-select').val('021');
+				        	jQuery('#city-select').select2("val", "021");
+				        	jQuery("#city-select").trigger('change');
+			        	}
 			        	jQuery('#city-select').prop("disabled", false);
 			        	
 			        },
@@ -30,8 +33,12 @@ jQuery(document).ready(function(){
 			    });
 		}, 1000);
 	}
+	jQuery('.current-loc-main-button').click(function(){
+		showCurrentLocation();
+	});
 
 	jQuery("#city-select").on('change', function() {
+		removeSearchedMarkers();
 		var center = {
 			lat: parseFloat(jQuery('option:selected', this).attr('data-lat')),
 			lng: parseFloat(jQuery('option:selected', this).attr('data-lon'))
@@ -69,16 +76,16 @@ jQuery(document).ready(function(){
 		}
         jQuery('#user-latitude').html(center.lat);
     	jQuery('#user-longitude').html(center.lng);
-        userPositionMarker.addListener('position_changed', function() {
-        	var pos = userPositionMarker.getPosition();
+        globalMaps.headerMap.userPositionMarker.addListener('position_changed', function() {
+        	var pos = globalMaps.headerMap.userPositionMarker.getPosition();
         	jQuery('#user-latitude').html(pos.lat());
         	jQuery('#user-longitude').html(pos.lng());
         });
-        userPositionMarker.addListener('dragstart', function() {
-        	userPositionMarker.setIcon(userLocImageMoving);
+        globalMaps.headerMap.userPositionMarker.addListener('dragstart', function() {
+        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageMoving);
         });
-        userPositionMarker.addListener('dragend', function() {
-        	userPositionMarker.setIcon(userLocImageStatic);
+        globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
+        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
         });
 
 		var aCode = this.value;
@@ -113,11 +120,17 @@ jQuery(document).ready(function(){
 		var catId = this.value;
 		if (catId != '') {
 			var aCode = jQuery('#city-select').val();
+			var brandUrl = '';
+			if (aCode != '') {
+				brandUrl = 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/areacode/'+aCode+'/category/'+catId;
+			} else {
+				brandUrl = 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/categoryId/'+catId;
+			}
 	    	jQuery('#brand-select').empty();
 	    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
 			jQuery("#brand-select").val('').trigger('change');
 			jQuery.ajax({
-		        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/areacode/'+aCode+'/category/'+catId,
+		        url: brandUrl,
 		        type: 'GET',
 		        beforeSend: function (request)
 		        {
@@ -374,58 +387,177 @@ jQuery(document).ready(function(){
 	{/if}
 
 	jQuery('.searchsubmit2').click(function(){
-		var userLat = jQuery('#user-latitude').html();
-		var userLng = jQuery('#user-longitude').html();
-		var city = jQuery('#city-select').val();
-		var category = jQuery('#category-select').val();
-		if (category == '') {
-			category = 'all';
-		}
-		var brand = jQuery('#brand-select').val();
-		if (brand == '') {
-			brand = 'all';
-		}
-		var onlyVerified = jQuery('#verification-checkbox').is(':checked');
-		var onlyDiscount = jQuery('#sales-checkbox').is(':checked');
-		var distance = jQuery('.radius-value').html();
+		doSearch();
+	});
+});
 
+
+
+function updateRadiusText(context) {
+	var value = context.value;
+	jQuery(context).closest('.radius').find('.radius-value').text(value);
+}
+
+function toggleRadius(context) {
+	var $container = jQuery(context).parent('.radius');
+	if ($container.hasClass('radius-set')) {
+		// disable radius and geolocation
+		$container.find('input').each(function(){
+			jQuery(this).attr('disabled', true);
+		});
+		$container.removeClass('radius-set');
+	} else {
+		// enable radius and geolocation
+		$container.find('input').each(function(){
+			jQuery(this).attr('disabled', false);
+		});
+		$container.addClass('radius-set');
+	}
+}
+
+function initRadius($container) {
+	if ($container.hasClass('radius-set')) {
+		$container.find('input').each(function(){
+			jQuery(this).attr('disabled', false);
+		});
+	} else {
+		$container.find('input').each(function(){
+			jQuery(this).attr('disabled', true);
+		});
+	}
+}
+
+function showCurrentLocation(callback) {
+	var gMapApiKey = jQuery( "script[src*='maps.google.com/maps/api']" ).attr('src').split('&')[1].substr(4);
+	jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key="+gMapApiKey, function(result) {
+		var userLoc = {
+			lat: result.location.lat,
+			lng: result.location.lng
+		}
+		globalMaps.headerMap.userLoc = userLoc;
+		globalMaps.headerMap.map.setCenter(userLoc);
+		globalMaps.headerMap.map.setZoom(12);
+		var userLocImageStatic = {
+		    url: '/wp-content/themes/businessfinder2/design/img/user-location.png',
+		    // This marker is 20 pixels wide by 32 pixels high.
+		    size: new google.maps.Size(40, 73),
+		    // The origin for this image is (0, 0).
+		    origin: new google.maps.Point(0, 0),
+		    anchor: new google.maps.Point(20, 73)
+		  };
+		var userLocImageMoving = {
+		    url: '/wp-content/themes/businessfinder2/design/img/user-location-moving.png',
+		    // This marker is 20 pixels wide by 32 pixels high.
+		    size: new google.maps.Size(40, 73),
+		    // The origin for this image is (0, 0).
+		    origin: new google.maps.Point(0, 0),
+		    anchor: new google.maps.Point(20, 73)
+		  };
+		if (globalMaps.headerMap.userPositionMarker) {
+			globalMaps.headerMap.userPositionMarker.setPosition(userLoc);
+		} else {
+			var userPositionMarker = new google.maps.Marker({
+				icon: userLocImageStatic,
+				position: userLoc,
+				map: globalMaps.headerMap.map,
+				title: 'Drag me!',
+				draggable: true
+	        });
+        	globalMaps.headerMap.userPositionMarker = userPositionMarker;
+		}
+		jQuery('#city-select').val('');
+    	jQuery('#city-select').select2("val", "");
+		jQuery('#user-latitude').html(userLoc.lat);
+    	jQuery('#user-longitude').html(userLoc.lng);
+        globalMaps.headerMap.userPositionMarker.addListener('position_changed', function() {
+        	var pos = globalMaps.headerMap.userPositionMarker.getPosition();
+        	jQuery('#user-latitude').html(pos.lat());
+        	jQuery('#user-longitude').html(pos.lng());
+        });
+        globalMaps.headerMap.userPositionMarker.addListener('dragstart', function() {
+        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageMoving);
+        });
+        globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
+        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
+        });
+        jQuery('#category-select').empty();
+    	jQuery('#category-select').append('<option value="">&nbsp;</option>');
+    	jQuery('#brand-select').empty();
+    	jQuery('#brand-select').append('<option value="">&nbsp;</option>');
+    	jQuery("#brand-select").val('').trigger('change');
+    	jQuery("#category-select").val('').trigger('change');
 		jQuery.ajax({
-            url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + userLat + '/' + userLng,
-            type: 'GET',
-            beforeSend: function (request)
-            {
-            	request.setRequestHeader("Content-Type", "application/json");
-            	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
-            },
-            success: function(result) {
-            	// Remove previous searched markers
-            	if (typeof globalMaps.headerMap.ourMarkers !== 'undefined') {
-					for (var i = 0; i < globalMaps.headerMap.ourMarkers.length; i++ ) {
-						globalMaps.headerMap.ourMarkers[i].setMap(null);
-					}
-					globalMaps.headerMap.ourMarkers.length = 0;
-					// for (var i = 0; i < globalMaps.headerMap.ourInfoWindows.length; i++ ) {
-					// 	globalMaps.headerMap.ourInfoWindows[i].setMap(null);
-					// }
-					// globalMaps.headerMap.ourInfoWindows.length = 0;
-				}
-				globalMaps.headerMap.ourMarkers = [];
-				globalMaps.headerMap.ourInfoWindows = [];
-            	//var infowindow = new google.maps.InfoWindow;
-            	var itemHtml = '';
-            	var imageName = '';
-            	jQuery('.elements-area .stores-list').empty();
-            	var processedItems = 0;
-            	var bounds = new google.maps.LatLngBounds();
-                result.forEach(function(item, index, array){
-                	var myLatLng = {};
-                	myLatLng.lat = parseFloat(item.sLat);
-                	myLatLng.lng = parseFloat(item.sLong);
-      //           	var marker = new google.maps.Marker({
-						// position: myLatLng,
-						// map: globalMaps.headerMap.map,
-						// title: item.sName
-			   //      });
+	        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/categories/categorylist/',
+	        type: 'GET',
+	        beforeSend: function (request)
+	        {
+	        	request.setRequestHeader("Content-Type", "application/json");
+	        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+	        },
+	        success: function(result) {
+	        	result.forEach(function(item, index, array){
+	        		jQuery('#category-select').append('<option value="' + item.cId + '">' + item.cName + '</option>')
+	        		if (index == array.length - 1) {
+	        			callback();
+	        		}
+	        	});
+	        	jQuery('#category-select').prop("disabled", false);
+	        	
+	        },
+	        error: function(result){
+	        	console.log(result);
+	        	debugger;
+	        }
+	    });
+	})
+	.fail(function(err) {
+		console.log(err);
+	});
+}
+
+
+function doSearch() {
+	var userLat = jQuery('#user-latitude').html();
+	var userLng = jQuery('#user-longitude').html();
+	var city = (jQuery('#city-select').val() != '' ? jQuery('#city-select').val() : 'unknown');
+	var category = jQuery('#category-select').val();
+	if (category == '') {
+		category = 'all';
+	}
+	var brand = jQuery('#brand-select').val();
+	if (brand == '') {
+		brand = 'all';
+	}
+	var onlyVerified = jQuery('#verification-checkbox').is(':checked');
+	var onlyDiscount = jQuery('#sales-checkbox').is(':checked');
+	var distance = jQuery('.radius-value').html();
+
+	jQuery.ajax({
+	    url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + userLat + '/' + userLng,
+	    type: 'GET',
+	    beforeSend: function (request)
+	    {
+	    	request.setRequestHeader("Content-Type", "application/json");
+	    	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+	    },
+	    success: function(result) {
+	    	if (result.length != 0) {
+		    	// Remove previous searched markers
+		    	removeSearchedMarkers();
+				
+		    	//var infowindow = new google.maps.InfoWindow;
+		    	var itemHtml = '';
+		    	var imageName = '';
+		    	var processedItems = 0;
+		    	var bounds = new google.maps.LatLngBounds();
+		    	if (typeof globalMaps.headerMap.userPositionMarker != 'undefined') {
+		    		bounds.extend(globalMaps.headerMap.userPositionMarker.getPosition());
+		    		globalMaps.headerMap.map.fitBounds(bounds);
+		    	}
+		        result.forEach(function(item, index, array){
+		        	var myLatLng = {};
+		        	myLatLng.lat = parseFloat(item.sLat);
+		        	myLatLng.lng = parseFloat(item.sLong);
 			        imageName = item.bName.toLowerCase().replace(/ /g, '');
 
 			        var pictureLabel = document.createElement("img");
@@ -498,9 +630,9 @@ jQuery(document).ready(function(){
 											'</p><p class="store-icons">' +  
 											(item.sVerified == 'YES' ? '<i class="fa fa-check "></i>' : '') + (item.hasOwnProperty('dPrecentage') ? '<i class="fa fa-percent"></i>' : '') +
 										'</p></div>\
-										<div class="store-contact">\
-											<a>نکات اصل و تقلبی</a>\
-											<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
+										<div class="store-contact">'+
+										(item.hasOwnProperty('verifiationHints') && item.verifiationHints == 'true' ? '<a data-brandid='+item.bId+'>نکات اصل و تقلبی</a>' : '')
+										+'<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
 										</div>\
 									</div>\
 									<div class="clearboth"></div>\
@@ -508,63 +640,27 @@ jQuery(document).ready(function(){
 			        jQuery('.elements-area .stores-list').append(itemHtml);
 			        processedItems++;
 
-                });
-            },
-            error: function(result){
-            	console.log(result);
-            	debugger;
-            }
-        });
+		        });
+	    	} else {
+	    		jQuery('.elements-area .stores-list').html('<h2 class="empty-results">موردی یافت نشد!</h2>');
+	    	}
+	    },
+	    error: function(result){
+	    	console.log(result);
+	    	debugger;
+	    }
 	});
-});
-
-
-
-function updateRadiusText(context) {
-	var value = context.value;
-	jQuery(context).closest('.radius').find('.radius-value').text(value);
 }
-
-function toggleRadius(context) {
-	var $container = jQuery(context).parent('.radius');
-	if ($container.hasClass('radius-set')) {
-		// disable radius and geolocation
-		$container.find('input').each(function(){
-			jQuery(this).attr('disabled', true);
-		});
-		$container.removeClass('radius-set');
-	} else {
-		// enable radius and geolocation
-		$container.find('input').each(function(){
-			jQuery(this).attr('disabled', false);
-		});
-		$container.addClass('radius-set');
-		setGeoData();
+function removeSearchedMarkers() {
+	if (typeof globalMaps.headerMap.ourMarkers !== 'undefined') {
+		for (var i = 0; i < globalMaps.headerMap.ourMarkers.length; i++ ) {
+			globalMaps.headerMap.ourMarkers[i].setMap(null);
+		}
+		globalMaps.headerMap.ourMarkers.length = 0;
 	}
+	globalMaps.headerMap.ourMarkers = [];
+	jQuery('.elements-area .stores-list').empty();
 }
 
-function initRadius($container) {
-	if ($container.hasClass('radius-set')) {
-		$container.find('input').each(function(){
-			jQuery(this).attr('disabled', false);
-		});
-		setGeoData();
-	} else {
-		$container.find('input').each(function(){
-			jQuery(this).attr('disabled', true);
-		});
-	}
-}
-
-function setGeoData() {
-	if(navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-			var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			jQuery("#latitude-search").attr('value', pos.lat());
-			jQuery("#longitude-search").attr('value', pos.lng());
-		});
-	}
-
-}
 
 </script>
