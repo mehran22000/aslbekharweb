@@ -3,7 +3,7 @@ jQuery(document).ready(function(){
 
 	if (typeof globalMaps == 'undefined') {
 		var mapInterval = setInterval(function(){ 
-			if (typeof globalMaps.headerMap.map != 'undefined')
+			if (typeof globalMaps != 'undefined' && typeof globalMaps.headerMap != 'undefined' && typeof globalMaps.headerMap.map != 'undefined')
 				clearInterval(mapInterval);
 				showCurrentLocation(doSearch);
 				jQuery.ajax({
