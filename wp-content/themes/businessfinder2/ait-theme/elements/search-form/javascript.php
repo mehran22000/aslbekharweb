@@ -18,12 +18,13 @@ jQuery(document).ready(function(){
 			        	result.forEach(function(item, index, array){
 			        		jQuery('#city-select').append('<option data-lat="'+item.centerLat+'" data-lon="'+item.centerLon+'" value="' + item.areaCode + '">' + item.cityNameFa + '</option>')
 			        	});
+			        	jQuery('#city-select').prop("disabled", false);
 			        	if (typeof globalMaps.headerMap.userLoc != 'object') {
 				        	jQuery('#city-select').val('021');
 				        	jQuery('#city-select').select2("val", "021");
 				        	jQuery("#city-select").trigger('change');
+				        	doSearch();
 			        	}
-			        	jQuery('#city-select').prop("disabled", false);
 			        	
 			        },
 			        error: function(result){
