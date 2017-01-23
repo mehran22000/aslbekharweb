@@ -196,6 +196,10 @@ return array(
 				'file'	=> '/libs/jquery.optiscroll.js',
 				'deps'	=> array('jquery'),
 			),
+			'jquery-easyModal' => array(
+				'file'	=> '/libs/jquery.easyModal.js',
+				'deps'	=> array('jquery'),
+			),
 			'markerwithlabel' => array(
 				'file'	=> '/libs/markerwithlabel.js'
 			),

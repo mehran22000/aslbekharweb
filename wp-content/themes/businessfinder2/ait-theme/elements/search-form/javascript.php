@@ -1,5 +1,6 @@
 <script id="{$htmlId}-script">
 jQuery(document).ready(function(){
+	jQuery('#the-modal').easyModal();
 
 	if (typeof globalMaps == 'undefined') {
 		var mapInterval = setInterval(function(){ 
@@ -88,6 +89,7 @@ jQuery(document).ready(function(){
         });
         globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
         	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
+        	doSearch();
         });
 
 		var aCode = this.value;
@@ -482,6 +484,7 @@ function showCurrentLocation(callback) {
 	        });
 	        globalMaps.headerMap.userPositionMarker.addListener('dragend', function() {
 	        	globalMaps.headerMap.userPositionMarker.setIcon(userLocImageStatic);
+	        	doSearch();
 	        });
 	        jQuery('#category-select').empty();
 	    	jQuery('#category-select').append('<option value="">&nbsp;</option>');
@@ -521,6 +524,10 @@ function showCurrentLocation(callback) {
 
 
 function doSearch() {
+	// Remove previous searched markers
+	removeSearchedMarkers();
+
+	var distance = '2';
 	var userLat = jQuery('#user-latitude').html();
 	var userLng = jQuery('#user-longitude').html();
 	var city = (jQuery('#city-select').val() != '' ? jQuery('#city-select').val() : 'unknown');
@@ -531,10 +538,11 @@ function doSearch() {
 	var brand = jQuery('#brand-select').val();
 	if (brand == '') {
 		brand = 'all';
+	} else {
+		distance = '15';
 	}
 	var onlyVerified = jQuery('#verification-checkbox').is(':checked');
 	var onlyDiscount = jQuery('#sales-checkbox').is(':checked');
-	var distance = jQuery('.radius-value').html();
 
 	jQuery.ajax({
 	    url: 'http://buyoriginal.herokuapp.com/services/v1/dev/stores/search/' + city + '/' + category + '/' + brand + '/' + onlyDiscount + '/' + onlyVerified + '/' + distance + '/' + userLat + '/' + userLng,
@@ -546,8 +554,6 @@ function doSearch() {
 	    },
 	    success: function(result) {
 	    	if (result.length != 0) {
-		    	// Remove previous searched markers
-		    	removeSearchedMarkers();
 				
 		    	//var infowindow = new google.maps.InfoWindow;
 		    	var itemHtml = '';
@@ -569,15 +575,15 @@ function doSearch() {
 					var image = {
 					    url: '/wp-content/themes/businessfinder2/design/img/base-marker.png',
 					    // This marker is 20 pixels wide by 32 pixels high.
-					    size: new google.maps.Size(80, 104),
+					    size: new google.maps.Size(40, 52),
 					    // The origin for this image is (0, 0).
 					    origin: new google.maps.Point(0, 0),
 					    // The anchor for this image is the base of the flagpole at (0, 32).
-					    anchor: new google.maps.Point(0, 104)
+					    anchor: new google.maps.Point(0, 52)
 					  };
 					  var labelStyle = {
-					  	width: '69px', 
-					  	height: '69px',
+					  	width: '33px', 
+					  	height: '33px',
 					  	borderRadius: '50%',
 					  	zIndex: 200
 					  };
@@ -588,7 +594,7 @@ function doSearch() {
 						draggable: false,
 						raiseOnDrag: false,
 						labelContent: pictureLabel,
-						labelAnchor: new google.maps.Point(-5, 98),
+						labelAnchor: new google.maps.Point(-3, 49),
 						labelClass: "marker-labels",
 						labelStyle: labelStyle
 					});
@@ -596,11 +602,13 @@ function doSearch() {
 			        bounds.extend(marker.getPosition());
 			        globalMaps.headerMap.map.fitBounds(bounds);
 			        marker.addListener('click', function() {
+			        	jQuery('.selected-brand').removeClass('selected-brand');
 			        	var obj = {
 			        		offset: -110,
 			        	};
 						jQuery('html').scrollTo(jQuery('.stores-list'), 800, obj);
 			        	jQuery('.stores-list').scrollTo(jQuery('#elem-'+item._id), 800);
+			        	jQuery('#elem-'+item._id).addClass('selected-brand');
 			        });
 			        globalMaps.headerMap.ourMarkers.push(marker);
 			        //globalMaps.headerMap.ourInfoWindows.push(infowindow);
@@ -617,27 +625,24 @@ function doSearch() {
 
 					// }
 					// });
-					itemHtml = '<li class="store-elem" id="elem-'+item._id+'">\
-									<div class="store-item">\
+					itemHtml = '<li class="store-elem" id="elem-'+item._id+'">' +
+					(item.sVerified == 'YES' ? '<a class="verified"></a>' : '') + (item.hasOwnProperty('dPrecentage') ? '<a class="discounted">'+item.dPrecentage+'%</a>' : '') +
+									'<div class="store-item">\
 										<div class="store-image">\
 											<img src="/wp-content/themes/businessfinder2/design/img/logos/'+imageName+'.png" />\
 										</div>\
-										<div class="store-info">\
-											<h4>'+item.sName+'</h4>\
+										<div class="store-info">'+
+										(item.hasOwnProperty('verifiationHints') && item.verifiationHints == 'true' ? '<a class="hints" data-brandid='+item.bId+'>نکات اصل و تقلبی</a>' : '')
+											+'<h4>'+item.sName+'</h4>\
 											<p>\
 												<span>آدرس: </span><span>'+item.sAddress+'</span>\
 											</p>\
 											<p>\
-												<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>\
-											</p>\
-											<p>'+(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>ساعت کار: </span><span>'+item.sHours+'</span>' : '')+
-											'</p><p class="store-icons">' +  
-											(item.sVerified == 'YES' ? '<i class="fa fa-check "></i>' : '') + (item.hasOwnProperty('dPrecentage') ? '<i class="fa fa-percent"></i>' : '') +
-										'</p></div>\
-										<div class="store-contact">'+
-										(item.hasOwnProperty('verifiationHints') && item.verifiationHints == 'true' ? '<a data-brandid='+item.bId+'>نکات اصل و تقلبی</a>' : '')
-										+'<p>'+(item.hasOwnProperty('dNote') ? item.dNote : '')+'</p>\
-										</div>\
+												<span>تلفن: </span><span>'+item.sTel1+(item.hasOwnProperty('sTel2') && item.sTel2 != '' ? ' - '+item.sTel2 : '')+'</span>' +
+												(item.hasOwnProperty('sHours') && item.sHours != '' ? '<span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; ساعت کار: </span><span>'+item.sHours+'</span>' : '') +
+											'</p>\
+											<p class="store-icons">\
+										</p></div>\
 									</div>\
 									<div class="clearboth"></div>\
 								</li>';
@@ -645,6 +650,38 @@ function doSearch() {
 			        processedItems++;
 
 		        });
+		        jQuery('.hints').click(function(){
+					var brandId = this.dataset.brandid;
+		        	jQuery('#the-modal').trigger('openModal');
+
+		        	jQuery('.hints-list ul').html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+					jQuery.ajax({
+				        url: 'https://buyoriginal.herokuapp.com/services/v1/dev/brands/verification/' + brandId,
+				        type: 'GET',
+				        beforeSend: function (request)
+				        {
+				        	request.setRequestHeader("Content-Type", "application/json");
+				        	request.setRequestHeader("token", "emFuYmlsZGFyYW5naGVybWV6DQo=");
+				        },
+				        success: function(result) {
+				        	jQuery('.hints-list ul').html('');
+				        	result.forEach(function(item, index, array){
+				        		jQuery('.hints-list ul').append('<li>\
+								<div class="hint-text">'+item.longDesc+'</div>\
+								<div class="hint-img">\
+									<img src="https://buyoriginal.herokuapp.com/images/verifications/'+item.largeImage+'" />\
+								</div>\
+							</li><hr />');
+				        	});
+
+				        	
+				        },
+				        error: function(result){
+				        	console.log(result);
+				        	debugger;
+				        }
+				    });
+				});
 	    	} else {
 	    		jQuery('.elements-area .stores-list').html('<h2 class="empty-results">موردی یافت نشد!</h2>');
 	    	}

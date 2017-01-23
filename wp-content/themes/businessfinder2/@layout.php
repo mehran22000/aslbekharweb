@@ -202,6 +202,18 @@
 				</div><!-- .elements-sidebar-wrap -->
 				</div><!-- .grid-main -->
 			</div><!-- .elements-with-sidebar -->
+			<div class="easy-modal" id="the-modal">
+				<div class="modal-content">
+					<!-- <a class="close">X</a> -->
+					<h3>نکاتی جهت شناسایی کالای اصل از غیر اصل</h3>
+					<!-- <div class="verification-logo"><img src="./wp-content/themes/businessfinder2/design/img/logo.png" /></div> -->
+					<div class="hints-list">
+						<ul>
+						</ul>
+					</div>
+				</div>
+
+			</div>
 
 		{else}
 			{? global $post}

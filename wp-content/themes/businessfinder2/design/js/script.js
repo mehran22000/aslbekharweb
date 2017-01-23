@@ -23,6 +23,8 @@ jQuery( ".menu-search" ).click(function() {
 	jQuery('html').scrollTo(jQuery('.site-header'), 800);
 });
 
+jQuery('#the-modal').easyModal();
+
 
 
 	/* menu.js initialization */
