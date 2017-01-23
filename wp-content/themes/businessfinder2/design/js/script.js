@@ -19,6 +19,9 @@ jQuery( ".menu-verify" ).click(function() {
 jQuery( ".menu-promote" ).click(function() {
 	jQuery('html').scrollTo(jQuery('.small-slides'), 800, scrollOpts);
 });
+jQuery( ".download-app" ).click(function() {
+	jQuery('html').scrollTo(jQuery('.apps'), 800, scrollOpts);
+});
 jQuery( ".menu-search" ).click(function() {
 	jQuery('html').scrollTo(jQuery('.site-header'), 800);
 });

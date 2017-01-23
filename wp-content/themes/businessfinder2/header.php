@@ -54,9 +54,9 @@
 				</div>
 				<div class="clearboth"></div>
 			</div>
-			<div class="download-app">
+			<a class="download-app">
 				
-			</div>
+			</a>
 		</header>
 
 		<div class="sticky-menu menu-container" >

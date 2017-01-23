@@ -9,25 +9,30 @@ float: right !important;
 float: left !important;
 }
 .stores-list {
-text-align: right;
+text-align: center;
+padding-top: 30px;
 height: 600px;
 border: 1px solid #dcdcdc;
 overflow-y: scroll;
     background: url(./wp-content/themes/businessfinder2/design/img/top-graph.png) repeat-x;
     background-position: top center;
 }
+ul.stores-list li.selected-brand {
+    border: 1px solid #323232;
+}
 ul.stores-list li {
-padding: 10px 0;
-border-bottom: 1px solid #d31edd;
+    border: 1px solid #d7d7d7;
+    margin: 10px;
+display: inline-block;
+    width: 280px;
+height: 300px;
+position: relative;
 }
 ul.stores-list li .store-item {
-width:900px;
 color: black;
 margin: auto;
 }
-ul.stores-list li .store-item div {
-float: right;
-}
+
 ul.stores-list li .store-icons {
 text-align: right;
 min-height: 1px;
@@ -48,11 +53,24 @@ padding: 4px;
 color: white;
 }
 ul.stores-list li .store-info {
-width: 40%;
-min-height:20px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 5px 10px;
+    background: #d7d7d7;
+color: #000;
+text-align:right;
+}
+ul.stores-list li.selected-brand .store-info {
+    background: #323232;
+color: #fff;
 }
 ul.stores-list li .store-info h4 {
 color: black;
+}
+ul.stores-list li.selected-brand .store-info h4 {
+color: white;
 }
 ul.stores-list li .store-contact {
 width: 35%;
@@ -62,16 +80,11 @@ ul.stores-list li .store-contact a {
 color: #d31edd;
 }
 ul.stores-list li .store-image {
-width: 15%;
-min-height:20px;
+width:100px;
+margin: auto;
+    margin-top: 5px;
 }
-ul.stores-list li .store-image img {
--webkit-border-radius: 50%;
--moz-border-radius: 50%;
-border-radius: 50%;
-margin-top: 8px;
-border: 1px solid #d31edd;
-}
+
 .main-slideshow, .small-slides, .apps {
 height: 600px;
 }
@@ -115,6 +128,7 @@ background: #000000 url(./wp-content/themes/businessfinder2/design/img/menu.png)
 background-position: top center;
 }
 .download-app{
+cursor: pointer;
 position: absolute;
 bottom: -20px;
 left: 50%;
@@ -252,13 +266,61 @@ color: white;
 border-top: 1px solid #404040;
 }
 .marker-labels img {
-width: 69px;
-height: 69px;
+width: 33px;
+height: 33px;
 }
 .empty-results {
 direction: rtl;
     text-align: center;
     margin-top: 20px;
 }
+
+.hints {
+position: absolute;
+    right: 0;
+    left: 0;
+    top: -30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background: #d31edd;
+    color: #fff;
+    display: block;
+    cursor: pointer;
+}
+.verified {
+    background: url(/wp-content/themes/businessfinder2/design/img/verified.png);
+    width: 49px;
+    height: 78px;
+    display: block;
+    position: absolute;
+    top: -10px;
+}
+.discounted {
+background: url(/wp-content/themes/businessfinder2/design/img/discount.png);
+    width: 49px;
+    height: 78px;
+    display: block;
+    position: absolute;
+    top: -10px;
+    text-align: center;
+    color: #cfcfcf !important;
+    line-height: 43px;
+}
+#the-modal {
+    background: #fff;
+    width: 600px;
+    max-height: 400px;
+    overflow: scroll;
+    padding: 40px;
+    text-align: right;
+}
+.easy-modal h3 {
+color: black;
+}
+.store-info p {
+direction: rtl;
+}
+
+
 
 
